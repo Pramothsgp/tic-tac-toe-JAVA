@@ -1,0 +1,75 @@
+package Practice;
+
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+
+public class GUICALCULATOR {
+
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		JFrame f=new JFrame();
+		f.setSize(1000,1000);
+		f.setLayout(null);
+		f.setVisible(true);
+		JTextField t1=new JTextField();
+		t1.setBounds(100,100,150,30);
+		f.add(t1);
+		JTextField t2=new JTextField();
+		t2.setBounds(350,100,150,30);
+		f.add(t2);
+		JButton addb1=new JButton("ADD");
+		addb1.setBounds(100,150,80,30);
+		f.add(addb1);
+		JButton subb2=new JButton("SUB");
+		subb2.setBounds(250,150,80,30);
+		f.add(subb2);
+		JButton mulb3=new JButton("MUL");
+		mulb3.setBounds(350,150,80,30);
+		f.add(mulb3);
+		JButton divb4=new JButton("DIV");
+		divb4.setBounds(450,150,80,30);
+		f.add(divb4);
+		JLabel r1=new JLabel();
+		r1.setBounds(500,250,100,100);
+		f.add(r1);
+		addb1.addActionListener(new ActionListener());
+
+	}
+	
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
+		
+	int num1=Integer.parseInt(t1.getText());
+	int num2=Integer.parseInt(t2.getText());
+	String command=e.getActionCommand();
+	switch(command)
+	{
+	case "ADD":
+	    int result=num1+num2;
+		r1.setText("result "+result);
+		break;
+	case "SUB":
+	int re = num1 - num2;
+	r1.setText("result="+re);
+	break;
+	case "MUL":
+		int r=num1*num2;
+		r1.setText("result "+r);
+		break;
+	case "DIV":
+		int res=num1/num2;
+		r1.setText("result "+res);
+		break;
+	}
+	
+		
+	}
+
+}
