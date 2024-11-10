@@ -1,0 +1,166 @@
+package TICTACTOE;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class MainApplication extends JFrame {
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
+    
+    public MainApplication() {
+        setTitle("Application");
+        setSize(414,896);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        
+        mainPanel.add(new LoginPage(this), "LoginPage");
+        mainPanel.add(new RegistrationPage(this), "RegistrationPage");
+        mainPanel.add(new HomePage(this), "HomePage");
+        
+        add(mainPanel);
+        cardLayout.show(mainPanel, "LoginPage");
+    }
+    
+    public void showCard(String cardName) {
+        cardLayout.show(mainPanel, cardName);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MainApplication().setVisible(true));
+    }
+}
+
+class LoginPage extends JPanel {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    
+    public LoginPage(MainApplication mainApp) {
+        setLayout(new GridLayout(7, 1, 10, 10));
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
+        JButton loginButton = new JButton("Login");
+        JButton registerButton = new JButton("Register");
+        
+        loginButton.addActionListener(e -> {
+            String username = usernameField.getText();
+            String password = new String(passwordField.getPassword());
+            if (username.equals("admin") && password.equals("password")) {
+                mainApp.showCard("HomePage");
+            } else {
+                JOptionPane.showMessageDialog(null, "Invalid username or password", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        });
+        
+        registerButton.addActionListener(e -> mainApp.showCard("RegistrationPage"));
+        
+        add(new JLabel("Username:"));
+        add(usernameField);
+        add(new JLabel("Password:"));
+        add(passwordField);
+        add(loginButton);
+        add(registerButton);
+    }
+}
+
+class RegistrationPage extends JPanel {
+    private JTextField usernameField;
+    private JPasswordField passwordField;
+    
+    public RegistrationPage(MainApplication mainApp) {
+        setLayout(new GridLayout(4, 1, 10, 10));
+        usernameField = new JTextField();
+        passwordField = new JPasswordField();
+        JButton registerButton = new JButton("Register");
+        JButton backButton = new JButton("Back to Login");
+        
+        registerButton.addActionListener(e -> {
+            JOptionPane.showMessageDialog(null, "Registration Successful");
+            mainApp.showCard("LoginPage");
+        });
+        
+        backButton.addActionListener(e -> mainApp.showCard("LoginPage"));
+        
+        add(new JLabel("Username:"));
+        add(usernameField);
+        add(new JLabel("Password:"));
+        add(passwordField);
+        add(registerButton);
+        add(backButton);
+    }
+}
+
+class HomePage extends JPanel {
+    private JButton[] buttons;
+    private char currentPlayer;
+
+    public HomePage(MainApplication mainApp) {
+        setLayout(new BorderLayout());
+        
+        JPanel ticTacToePanel = new JPanel(new GridLayout(3, 3));
+        buttons = new JButton[9];
+        currentPlayer = 'X';
+        
+        for (int i = 0; i < 9; i++) {
+            buttons[i] = new JButton("");
+            buttons[i].setFont(new Font("Arial", Font.PLAIN, 60));
+            buttons[i].setFocusPainted(false);
+            int index = i;
+            buttons[i].addActionListener(e -> handleMove(index));
+            ticTacToePanel.add(buttons[i]);
+        }
+        
+        JButton logoutButton = new JButton("Logout");
+        logoutButton.addActionListener(e -> mainApp.showCard("LoginPage"));
+        
+        add(new JLabel("Tic Tac Toe"), BorderLayout.NORTH);
+        add(ticTacToePanel, BorderLayout.CENTER);
+        add(logoutButton, BorderLayout.SOUTH);
+    }
+    
+    private void handleMove(int index) {
+        if (buttons[index].getText().equals("")) {
+            buttons[index].setText(String.valueOf(currentPlayer));
+            if (checkWinner()) {
+                JOptionPane.showMessageDialog(null, currentPlayer + " wins!");
+                resetBoard();
+            } else if (isBoardFull()) {
+                JOptionPane.showMessageDialog(null, "It's a draw!");
+                resetBoard();
+            }
+            currentPlayer = (currentPlayer == 'X') ? 'O' : 'X';
+        }
+    }
+    
+    private boolean checkWinner() {
+        String line = "" + currentPlayer + currentPlayer + currentPlayer;
+        return (buttons[0].getText() + buttons[1].getText() + buttons[2].getText()).equals(line) ||
+               (buttons[3].getText() + buttons[4].getText() + buttons[5].getText()).equals(line) ||
+               (buttons[6].getText() + buttons[7].getText() + buttons[8].getText()).equals(line) ||
+               (buttons[0].getText() + buttons[3].getText() + buttons[6].getText()).equals(line) ||
+               (buttons[1].getText() + buttons[4].getText() + buttons[7].getText()).equals(line) ||
+               (buttons[2].getText() + buttons[5].getText() + buttons[8].getText()).equals(line) ||
+               (buttons[0].getText() + buttons[4].getText() + buttons[8].getText()).equals(line) ||
+               (buttons[2].getText() + buttons[4].getText() + buttons[6].getText()).equals(line);
+    }
+    
+    private boolean isBoardFull() {
+        for (JButton button : buttons) {
+            if (button.getText().equals("")) {
+                return false;
+            }
+        }
+        return true;
+    }
+    
+    private void resetBoard() {
+        for (JButton button : buttons) {
+            button.setText("");
+        }
+        currentPlayer = 'X';
+    }
+}

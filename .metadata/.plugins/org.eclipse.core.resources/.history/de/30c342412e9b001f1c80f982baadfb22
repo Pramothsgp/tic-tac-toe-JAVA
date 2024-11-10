@@ -1,0 +1,59 @@
+package GUI;
+
+package PACK;
+
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+
+public class Main {
+    public static void main(String[] args) {
+        JFrame frame = new JFrame("Login Form");
+        frame.setSize(400, 600);
+        frame.setLayout(null);
+
+        JLabel userLabel = new JLabel("Username:");
+        userLabel.setBounds(100, 100, 200, 30);
+
+        JTextField userTextField = new JTextField();
+        userTextField.setBounds(100, 130, 200, 30);
+
+        JLabel passLabel = new JLabel("Password:");
+        passLabel.setBounds(100, 170, 200, 30);
+
+        JPasswordField passField = new JPasswordField();
+        passField.setBounds(100, 200, 200, 30);
+
+        JButton loginButton = new JButton("Login");
+        loginButton.setBounds(150, 250, 100, 30);
+
+        
+        frame.add(userLabel);
+        frame.add(userTextField);
+        frame.add(passLabel);
+        frame.add(passField);
+        frame.add(loginButton);
+
+        frame.setVisible(true);
+        
+        loginButton.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				String message = " Login Failed ";
+				if() {
+					message = "Login Sussess"
+				}
+				JOptionPane.showMessageDialog(null, message);
+			}
+		});
+    }
+
+}
